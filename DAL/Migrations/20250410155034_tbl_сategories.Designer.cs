@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250410065504_tbl_сategories")]
+    [Migration("20250410155034_tbl_сategories")]
     partial class tbl_сategories
     {
         /// <inheritdoc />
