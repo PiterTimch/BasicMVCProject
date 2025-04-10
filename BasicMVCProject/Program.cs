@@ -1,4 +1,5 @@
 using System;
+using BasicMVCProject.Helpers;
 using DAL.Context;
 using DAL.Interfaces;
 using DAL.Services.Categories;
@@ -13,17 +14,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 var app = builder.Build();
-
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
-//    var context = services.GetRequiredService<AppDbContext>();
-//    var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-//    AppDbContext.Seed(services, loggerFactory);
-//}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -41,5 +36,6 @@ app.MapControllerRoute(
     pattern: "{controller=Categories}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+await app.SeedData();
 
 app.Run();
