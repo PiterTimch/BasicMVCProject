@@ -1,7 +1,19 @@
+using System;
+using DAL.Context;
+using DAL.Interfaces;
+using DAL.Services.Categories;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 
