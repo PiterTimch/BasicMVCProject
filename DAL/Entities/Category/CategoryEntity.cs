@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DAL.Entities.Category
 {
+    [Table("tbl_сategories")]
     public class CategoryEntity
     {
         [Key]

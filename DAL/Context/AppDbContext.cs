@@ -14,6 +14,10 @@ namespace DAL.Context
         {
         }
 
+        public AppDbContext()
+        {
+        }
+
         public static void Seed(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
         {
             using (var context = new AppDbContext(
@@ -21,7 +25,7 @@ namespace DAL.Context
             {
                 try
                 {
-                    if (context.Categories.Any()) return; // Якщо категорії вже існують, не додавати нові
+                    if (context.Categories.Any()) return;
 
                     context.Categories.AddRange(
                         new CategoryEntity
