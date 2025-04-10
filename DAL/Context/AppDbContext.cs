@@ -5,7 +5,7 @@ namespace DAL.Context
 {
     public class AppDbContext : DbContext
     {
-        DbSet<CategoryEntity> Categories { get; set; }
+        public DbSet<CategoryEntity> Categories { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
