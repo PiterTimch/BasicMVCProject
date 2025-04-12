@@ -10,6 +10,7 @@ namespace BasicMVCProject.Mapper
         public CategryMapper()
         {
             CreateMap<CategoryEntity, CategoryItemViewModel>();
+            CreateMap<CategoryCreateViewModel, CategoryEntity>();
         }
     }
 }
