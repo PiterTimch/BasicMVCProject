@@ -39,5 +39,33 @@ namespace BasicMVCProject.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var entity = await context.Categories.FindAsync(id);
+            if (entity == null) return NotFound();
+
+            var model = mapper.Map<CategoryEditViewModel>(entity);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(CategoryEditViewModel model)
+        {
+            var exists = await context.Categories
+                .AnyAsync(x => x.Name == model.Name && x.Id != model.Id);
+
+            if (exists)
+            {
+                ModelState.AddModelError("Name", "Категорія з такою назвою вже існує.");
+                return View(model);
+            }
+
+            var item = mapper.Map<CategoryEntity>(model);
+            context.Categories.Update(item);
+            await context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

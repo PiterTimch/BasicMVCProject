@@ -1,13 +1,13 @@
-﻿@model CategoryCreateViewModel
+﻿@model CategoryEditViewModel
 
 <div class="container">
-    <form asp-action="Create" class="p-4 shadow rounded bg-light" style="max-width: 600px; margin: auto;">
-        <h4 class="mb-4">Створення категорії</h4>
+    <form asp-action="Edit" class="p-4 shadow rounded bg-light" style="max-width: 600px; margin: auto;">
+        <h4 class="mb-4">Редагування категорії</h4>
 
         <div class="mb-3">
             <label asp-for=Name class="form-label"></label>
             <input asp-for=Name type="text" class="form-control" placeholder="Введіть назву категорії" required>
-			<span asp-validation-for="Name" class="text-danger"></span>
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
@@ -20,7 +20,7 @@
             <input asp-for=ImageUrl class="form-control" placeholder="https://example.com/image.jpg">
         </div>
 
-        <button type="submit" class="btn btn-primary">Створити категорію</button>
+        <button type="submit" class="btn btn-primary">Редагувати</button>
         <a asp-action="Index" class="btn btn-info">Скасувати</a>
     </form>
 

@@ -2,8 +2,10 @@
 
 namespace BasicMVCProject.Models.Category
 {
-    public class CategoryCreateViewModel
+    public class CategoryEditViewModel
     {
+        public int Id { get; set; }
+
         [Display(Name = "Назва категорії")]
         [DataType(DataType.Text)]
         public string Name { get; set; } = string.Empty;
