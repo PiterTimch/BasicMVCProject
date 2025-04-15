@@ -1,9 +1,12 @@
 using System;
 using BasicMVCProject.Helpers;
+using BasicMVCProject.Interfaces;
+using BasicMVCProject.Services;
 using DAL.Context;
 using DAL.Interfaces;
 using DAL.Services.Categories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +20,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 var app = builder.Build();
 
@@ -35,6 +39,16 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Categories}/{action=Index}/{id?}")
     .WithStaticAssets();
+
+var dir = builder.Configuration["ImageDir"];
+
+string path = Path.Combine(Directory.GetCurrentDirectory(), dir);
+Directory.CreateDirectory(path);
+
+app.UseStaticFiles(new StaticFileOptions {
+    FileProvider = new PhysicalFileProvider(path),
+    RequestPath = $"/{dir}",
+});
 
 await app.SeedData();
 

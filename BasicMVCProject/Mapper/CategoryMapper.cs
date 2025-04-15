@@ -12,7 +12,8 @@ namespace BasicMVCProject.Mapper
             CreateMap<CategoryEntity, CategoryItemViewModel>();
             CreateMap<CategoryEntity, CategoryEditViewModel>();
             CreateMap<CategoryEditViewModel, CategoryEntity>();
-            CreateMap<CategoryCreateViewModel, CategoryEntity>();
+            CreateMap<CategoryCreateViewModel, CategoryEntity>()
+                .ForMember(x => x.ImageUrl, opt => opt.Ignore());
             CreateMap<CategoryItemViewModel, CategoryEditViewModel>();
         }
     }

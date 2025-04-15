@@ -1,7 +1,7 @@
 ﻿@model CategoryCreateViewModel
 
 <div class="container">
-    <form asp-action="Create" class="p-4 shadow rounded bg-light" style="max-width: 600px; margin: auto;">
+    <form asp-action="Create" enctype="multipart/form-data" class="p-4 shadow rounded bg-light" style="max-width: 600px; margin: auto;">
         <h4 class="mb-4">Створення категорії</h4>
 
         <div class="mb-3">
@@ -16,8 +16,8 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for=ImageUrl class="form-label"></label>
-            <input asp-for=ImageUrl class="form-control" placeholder="https://example.com/image.jpg">
+            <label asp-for=ImageFile class="form-label"></label>
+            <input asp-for=ImageFile type="file" class="form-control" accept="image/*" placeholder="https://example.com/image.jpg">
         </div>
 
         <button type="submit" class="btn btn-primary">Створити категорію</button>

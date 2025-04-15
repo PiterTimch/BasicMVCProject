@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BasicMVCProject.Interfaces;
 using BasicMVCProject.Models.Category;
 using DAL.Context;
 using DAL.Entities.Category;
@@ -6,10 +7,15 @@ using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Webp;
+using SixLabors.ImageSharp.Processing;
 
 namespace BasicMVCProject.Controllers
 {
-    public class CategoriesController(ICategoryService service, IMapper mapper) : Controller
+    public class CategoriesController(
+        ICategoryService service, IMapper mapper, IConfiguration configuration, IImageService imageService
+        ) : Controller
     {
         public async Task<IActionResult> Index()
         {
@@ -28,16 +34,20 @@ namespace BasicMVCProject.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CategoryCreateViewModel model)
         {
-            var items = await service.GetAllAsync();
-            var item = items.FirstOrDefault(x => x.Name == model.Name);
+            var entitys = await service.GetAllAsync();
+            var entity = entitys.FirstOrDefault(x => x.Name == model.Name);
 
-            if (item != null)
+            if (entity != null)
             {
                 ModelState.AddModelError("Name", "Категорія з такою назвою вже існує.");
                 return View(model);
             }
-            item = mapper.Map<CategoryEntity>(model);
-            await service.AddAsync(item);
+
+            string imageName = await imageService.SaveImageAsync(model.ImageFile);
+
+            entity = mapper.Map<CategoryEntity>(model);
+            entity.ImageUrl = imageName;
+            await service.AddAsync(entity);
 
             return RedirectToAction(nameof(Index));
         }
@@ -82,6 +92,5 @@ namespace BasicMVCProject.Controllers
             await service.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
-
     }
 }
