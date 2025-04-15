@@ -2,17 +2,19 @@
 using BasicMVCProject.Models.Category;
 using DAL.Context;
 using DAL.Entities.Category;
+using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BasicMVCProject.Controllers
 {
-    public class CategoriesController(AppDbContext context, IMapper mapper) : Controller
+    public class CategoriesController(ICategoryService service, IMapper mapper) : Controller
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var model = mapper.Map<List<CategoryItemViewModel>>(context.Categories.ToList());
+            var categoiesEntity = await service.GetAllAsync();
+            var model = mapper.Map<List<CategoryItemViewModel>>(categoiesEntity);
 
             return View(model);
         }
@@ -26,15 +28,16 @@ namespace BasicMVCProject.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CategoryCreateViewModel model)
         {
-            var item = await context.Categories.SingleOrDefaultAsync(x => x.Name == model.Name);
+            var items = await service.GetAllAsync();
+            var item = items.FirstOrDefault(x => x.Name == model.Name);
+
             if (item != null)
             {
                 ModelState.AddModelError("Name", "Категорія з такою назвою вже існує.");
                 return View(model);
             }
             item = mapper.Map<CategoryEntity>(model);
-            await context.Categories.AddAsync(item);
-            await context.SaveChangesAsync();
+            await service.AddAsync(item);
 
             return RedirectToAction(nameof(Index));
         }
@@ -42,7 +45,7 @@ namespace BasicMVCProject.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var entity = await context.Categories.FindAsync(id);
+            var entity = await service.GetByIdAsync(id);
             if (entity == null) return NotFound();
 
             var model = mapper.Map<CategoryEditViewModel>(entity);
@@ -52,18 +55,31 @@ namespace BasicMVCProject.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(CategoryEditViewModel model)
         {
-            var exists = await context.Categories
-                .AnyAsync(x => x.Name == model.Name && x.Id != model.Id);
+            var entities = await service.GetAllAsync();
+            
+            bool isAny = entities.Any(x => x.Name == model.Name && x.Id != model.Id);
 
-            if (exists)
+            if (isAny)
             {
                 ModelState.AddModelError("Name", "Категорія з такою назвою вже існує.");
                 return View(model);
             }
 
             var item = mapper.Map<CategoryEntity>(model);
-            context.Categories.Update(item);
-            await context.SaveChangesAsync();
+            await service.UpdateAsync(item);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var category = await service.GetByIdAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            await service.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 

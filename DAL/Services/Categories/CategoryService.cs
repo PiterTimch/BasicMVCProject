@@ -32,8 +32,15 @@ namespace DAL.Services.Categories
 
         public async Task UpdateAsync(CategoryEntity category)
         {
-            _context.Categories.Update(category);
-            await _context.SaveChangesAsync();
+            var existingCategory = await _context.Categories.FindAsync(category.Id);
+            if (existingCategory != null)
+            {
+                existingCategory.Name = category.Name;
+                existingCategory.Description = category.Description;
+                existingCategory.ImageUrl = category.ImageUrl;
+            
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteAsync(int id)

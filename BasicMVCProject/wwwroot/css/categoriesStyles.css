@@ -1,0 +1,7 @@
+.delete-btn {
+    display: none;
+}
+
+.card:hover .delete-btn {
+    display: block;
+}
