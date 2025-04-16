@@ -7,6 +7,22 @@ namespace BasicMVCProject.Services
 {
     public class ImageService(IConfiguration configuration) : IImageService
     {
+        public Task DeleteImage(string name)
+        {
+            var sizes = configuration.GetRequiredSection("ImageSizes").Get<List<int>>();
+
+            foreach (var size in sizes)
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), configuration["ImageDir"]!, $"{size}_{name}");
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+            }
+
+            return Task.CompletedTask;
+        }
+
         public async Task<string> SaveImageAsync(IFormFile file)
         {
             using MemoryStream ms = new();

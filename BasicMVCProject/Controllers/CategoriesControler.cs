@@ -89,6 +89,11 @@ namespace BasicMVCProject.Controllers
                 return NotFound();
             }
 
+            if (!string.IsNullOrEmpty(category.ImageUrl))
+            {
+                await imageService.DeleteImage(category.ImageUrl);
+            }
+
             await service.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
