@@ -3,6 +3,6 @@
     public interface IImageService
     {
         Task<string> SaveImageAsync(IFormFile file);
-        Task DeleteImage(string name);
+        Task DeleteImageAsync(string name);
     }
 }

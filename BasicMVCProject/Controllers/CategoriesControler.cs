@@ -75,8 +75,27 @@ namespace BasicMVCProject.Controllers
                 return View(model);
             }
 
-            var item = mapper.Map<CategoryEntity>(model);
-            await service.UpdateAsync(item);
+            var entity = mapper.Map<CategoryEntity>(model);
+            string oldImage = entities.FirstOrDefault(x => x.Id == model.Id)!.ImageUrl;
+
+            if (model.IsImageChanged)
+            {
+                if (String.IsNullOrEmpty(model.ImageFile.FileName.ToLower()))
+                {
+                    return NotFound();
+                }
+
+                await imageService.DeleteImageAsync(oldImage);
+
+                string imageName = await imageService.SaveImageAsync(model.ImageFile);
+                entity.ImageUrl = imageName;
+            }
+            else 
+            {
+                entity.ImageUrl = oldImage;
+            }
+
+            await service.UpdateAsync(entity);
             return RedirectToAction(nameof(Index));
         }
 
@@ -91,7 +110,7 @@ namespace BasicMVCProject.Controllers
 
             if (!string.IsNullOrEmpty(category.ImageUrl))
             {
-                await imageService.DeleteImage(category.ImageUrl);
+                await imageService.DeleteImageAsync(category.ImageUrl);
             }
 
             await service.DeleteAsync(id);

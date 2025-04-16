@@ -7,7 +7,7 @@ namespace BasicMVCProject.Services
 {
     public class ImageService(IConfiguration configuration) : IImageService
     {
-        public Task DeleteImage(string name)
+        public Task DeleteImageAsync(string name)
         {
             var sizes = configuration.GetRequiredSection("ImageSizes").Get<List<int>>();
 

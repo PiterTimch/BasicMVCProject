@@ -14,8 +14,10 @@ namespace BasicMVCProject.Models.Category
         [DataType(DataType.Text)]
         public string Description { get; set; } = string.Empty;
 
+        [Display(Name = "Змінювати зображення?")]
+        public bool IsImageChanged { get; set; }
+
         [Display(Name = "Зображення")]
-        [DataType(DataType.ImageUrl)]
-        public string ImageUrl { get; set; } = string.Empty;
+        public IFormFile ImageFile { get; set; }
     }
 }

@@ -13,7 +13,6 @@ namespace BasicMVCProject.Models.Category
         public string Description { get; set; } = string.Empty;
 
         [Display(Name = "Зображення")]
-        [DataType(DataType.ImageUrl)]
         public IFormFile ImageFile { get; set; }
     }
 }

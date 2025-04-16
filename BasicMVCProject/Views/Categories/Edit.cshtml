@@ -1,7 +1,7 @@
 ﻿@model CategoryEditViewModel
 
 <div class="container">
-    <form asp-action="Edit" class="p-4 shadow rounded bg-light" style="max-width: 600px; margin: auto;">
+    <form asp-action="Edit" enctype="multipart/form-data" class="p-4 shadow rounded bg-light" style="max-width: 600px; margin: auto;">
         <h4 class="mb-4">Редагування категорії</h4>
 
         <div class="mb-3">
@@ -16,8 +16,13 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for=ImageUrl class="form-label"></label>
-            <input asp-for=ImageUrl class="form-control" placeholder="https://example.com/image.jpg">
+            <label asp-for=IsImageChanged>Змінювати зображення</label>
+            <input asp-for=IsImageChanged type="checkbox" class="form-check-input" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for=ImageFile class="form-label"></label>
+            <input disabled asp-for=ImageFile type="file" class="form-control" accept="image/*">
         </div>
 
         <button type="submit" class="btn btn-primary">Редагувати</button>
@@ -25,3 +30,14 @@
     </form>
 
 </div>
+
+@section Scripts {
+    <script>
+        const imageCB = document.getElementById("IsImageChanged");
+        const imageInput = document.getElementById("ImageFile");
+
+		imageCB.addEventListener("change", function() {
+            imageInput.disabled = !this.checked;
+        })
+    </script>
+}
