@@ -1,4 +1,8 @@
-﻿@model CategoryEditViewModel
+﻿@{
+    Layout = "~/Views/Shared/_FormLayout.cshtml";
+}
+
+@model CategoryEditViewModel
 
 <div class="container">
     <form asp-action="Edit" enctype="multipart/form-data" class="p-4 shadow rounded bg-light" style="max-width: 600px; margin: auto;">
@@ -24,6 +28,8 @@
             <label asp-for=ImageFile class="form-label"></label>
             <input disabled asp-for=ImageFile type="file" class="form-control" accept="image/*">
         </div>
+
+        @await Html.PartialAsync("_ImageCropper")
 
         <button type="submit" class="btn btn-primary">Редагувати</button>
         <a asp-action="Index" class="btn btn-info">Скасувати</a>

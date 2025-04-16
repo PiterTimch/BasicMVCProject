@@ -1,4 +1,8 @@
-﻿@model CategoryCreateViewModel
+﻿@{
+    Layout = "~/Views/Shared/_FormLayout.cshtml";
+}
+
+@model CategoryCreateViewModel
 
 <div class="container">
     <form asp-action="Create" enctype="multipart/form-data" class="p-4 shadow rounded bg-light" style="max-width: 600px; margin: auto;">
@@ -19,6 +23,8 @@
             <label asp-for=ImageFile class="form-label"></label>
             <input asp-for=ImageFile type="file" class="form-control" accept="image/*" placeholder="https://example.com/image.jpg">
         </div>
+
+        @await Html.PartialAsync("_ImageCropper")
 
         <button type="submit" class="btn btn-primary">Створити категорію</button>
         <a asp-action="Index" class="btn btn-info">Скасувати</a>
