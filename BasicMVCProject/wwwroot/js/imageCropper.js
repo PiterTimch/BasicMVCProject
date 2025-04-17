@@ -1,7 +1,6 @@
 ﻿let input, image, croppedDataInput, cropper, form, cropContainer;
 
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("DOM fully loaded and parsed");
     input = document.getElementById("ImageFile");
     image = document.getElementById("croppingImage");
     croppedDataInput = document.getElementById("croppedImageData");
@@ -25,15 +24,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 cropend: function () {
                     const canvas = cropper.getCroppedCanvas();
                     croppedDataInput.value = canvas.toDataURL("image/webp");
+                    console.log(croppedDataInput.value);
+
+                    cropper.getCroppedCanvas().toBlob(function (blob) {
+                        const file = new File([blob], "cropped-image.webp", { type: "image/webp" });
+
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(file);
+
+                        input.files = dataTransfer.files;
+                    }, "image/webp");
                 }
             });
-        }
-    });
-
-    form.addEventListener("submit", function () {
-        if (cropper) {
-            const canvas = cropper.getCroppedCanvas();
-            croppedDataInput.value = canvas.toDataURL("image/webp");
         }
     });
 });

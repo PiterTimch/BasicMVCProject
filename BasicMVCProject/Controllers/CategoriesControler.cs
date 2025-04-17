@@ -43,6 +43,12 @@ namespace BasicMVCProject.Controllers
                 return View(model);
             }
 
+            if (model.ImageFile == null)
+            {
+                ModelState.AddModelError("ImageFile", "Зображення обов'язкове");
+                return View(model);
+            }
+
             string imageName = await imageService.SaveImageAsync(model.ImageFile);
 
             entity = mapper.Map<CategoryEntity>(model);
@@ -99,7 +105,7 @@ namespace BasicMVCProject.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             var category = await service.GetByIdAsync(id);

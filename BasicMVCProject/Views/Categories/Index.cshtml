@@ -2,7 +2,7 @@
 
 <div class="container mt-5">
     <h2 class="text-center mb-4">Категорії мультфільмів</h2>
-    <a href="@Url.Action("Create")" class="btn btn-success">Створити</a>
+    <a href="@Url.Action("Create")" class="btn btn-success mb-3">Створити</a>
     <div class="row row-cols-1 row-cols-md-3 g-4">
         @foreach (var item in Model)
         {
@@ -42,8 +42,10 @@
                             Ви дійсно хочете видалити категорію <strong>@item.Name</strong>?
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
+                            <form asp-action="Delete">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+                                <button type="submit" class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Видалити</button>
+                            </form>
                         </div>
                     </div>
                 </div>
