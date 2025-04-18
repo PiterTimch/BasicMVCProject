@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DAL.Entities.User
 {
-    [Table("tbl_сategories")]
+    [Table("tbl_users")]
     public class UserEntity
     {
         [Key]
@@ -31,5 +31,7 @@ namespace DAL.Entities.User
 
         [Required]
         public string PasswordHash { get; set; } = string.Empty;
+
+        public string? ImageName { get; set; } = string.Empty;
     }
 }

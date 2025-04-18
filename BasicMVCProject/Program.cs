@@ -5,6 +5,7 @@ using BasicMVCProject.Services;
 using DAL.Context;
 using DAL.Interfaces;
 using DAL.Services.Categories;
+using DAL.Services.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 
@@ -20,6 +21,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 
 var app = builder.Build();
