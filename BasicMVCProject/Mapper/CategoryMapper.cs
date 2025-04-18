@@ -10,8 +10,7 @@ namespace BasicMVCProject.Mapper
         public CategryMapper()
         {
             CreateMap<CategoryEntity, CategoryItemViewModel>();
-            CreateMap<CategoryEntity, CategoryEditViewModel>();
-            CreateMap<CategoryEditViewModel, CategoryEntity>();
+            CreateMap<CategoryEntity, CategoryEditViewModel>().ReverseMap();
             CreateMap<CategoryCreateViewModel, CategoryEntity>()
                 .ForMember(x => x.ImageUrl, opt => opt.Ignore());
             CreateMap<CategoryItemViewModel, CategoryEditViewModel>();

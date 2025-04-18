@@ -29,6 +29,10 @@
             <input disabled asp-for=ImageFile type="file" class="form-control" accept="image/*">
         </div>
 
+        <div class="mb-3 text-center">
+            <img id="oldImage" src="/images/1200_@ViewBag.ImageUrl" class="img-fluid" style="max-height: 200px;" />
+        </div>
+
         @await Html.PartialAsync("_ImageCropper")
 
         <button type="submit" class="btn btn-primary">Редагувати</button>
@@ -41,9 +45,17 @@
     <script>
         const imageCB = document.getElementById("IsImageChanged");
         const imageInput = document.getElementById("ImageFile");
+        const imageCropContainer = document.getElementById("imageCropContainer");
 
-		imageCB.addEventListener("change", function() {
+        imageCB.addEventListener("change", function () {
             imageInput.disabled = !this.checked;
-        })
+
+            const oldImage = document.getElementById("oldImage");
+            oldImage.style.display = this.checked ? "none" : "inline-block";
+            if(imageCropContainer)
+            {
+                imageCropContainer.style.display = this.checked ? "inline-block" : "none";
+            }
+        });
     </script>
 }

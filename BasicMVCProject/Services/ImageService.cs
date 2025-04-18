@@ -7,20 +7,27 @@ namespace BasicMVCProject.Services
 {
     public class ImageService(IConfiguration configuration) : IImageService
     {
-        public Task DeleteImageAsync(string name)
+        public async Task DeleteImageAsync(string name)
         {
             var sizes = configuration.GetRequiredSection("ImageSizes").Get<List<int>>();
+            var dir = Path.Combine(Directory.GetCurrentDirectory(), configuration["ImageDir"]!);
 
-            foreach (var size in sizes)
-            {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), configuration["ImageDir"]!, $"{size}_{name}");
-                if (File.Exists(path))
+            Task[] tasks = sizes
+                .AsParallel()
+                .Select(size =>
                 {
-                    File.Delete(path);
-                }
-            }
+                    return Task.Run(() =>
+                    {
+                        var path = Path.Combine(dir, $"{size}_{name}");
+                        if (File.Exists(path))
+                        {
+                            File.Delete(path);
+                        }
+                    });
+                })
+                .ToArray();
 
-            return Task.CompletedTask;
+            await Task.WhenAll(tasks);
         }
 
         public async Task<string> SaveImageAsync(IFormFile file)

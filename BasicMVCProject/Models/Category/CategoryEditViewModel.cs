@@ -6,6 +6,7 @@ namespace BasicMVCProject.Models.Category
     {
         public int Id { get; set; }
 
+        [Required(ErrorMessage ="Назва обов'язкова")]
         [Display(Name = "Назва категорії")]
         [DataType(DataType.Text)]
         public string Name { get; set; } = string.Empty;

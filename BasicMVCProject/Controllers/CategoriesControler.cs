@@ -64,6 +64,8 @@ namespace BasicMVCProject.Controllers
             var entity = await service.GetByIdAsync(id);
             if (entity == null) return NotFound();
 
+            ViewBag.ImageUrl = entity.ImageUrl;
+
             var model = mapper.Map<CategoryEditViewModel>(entity);
             return View(model);
         }
