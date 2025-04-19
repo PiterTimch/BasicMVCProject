@@ -24,13 +24,42 @@ namespace BasicMVCProject.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(UserCreateViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var existingUsers = await service.GetAllUsersAsync();
+
+            bool isEmailExist = existingUsers.Any(u => u.Email == model.Email);
+            bool isLoginExist = existingUsers.Any(u => u.Login == model.Login);
+            bool isPhoneExist = existingUsers.Any(u => u.Phone == model.Phone);
+
+            if (isEmailExist)
+                ModelState.AddModelError(nameof(model.Email), "Користувач з такою поштою уже існує");
+
+            if (isLoginExist)
+                ModelState.AddModelError(nameof(model.Login), "Користувач з таким логіном уже існує");
+
+            if (isPhoneExist)
+                ModelState.AddModelError(nameof(model.Phone), "Користувач з таким телефоном уже існує");
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             var entity = mapper.Map<UserEntity>(model);
 
-            string imageName = await imageService.SaveImageAsync(model.ImageFile);
+            if (model.ImageFile != null)
+            {
+                string imageName = await imageService.SaveImageAsync(model.ImageFile);
+                entity.ImageName = imageName;
+            }
 
-            entity.ImageName = imageName;
             await service.CreateUserAsync(entity);
-            return RedirectToAction("Index", "Category");
+
+            return RedirectToAction("Index", "Categories");
         }
     }
 }

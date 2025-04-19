@@ -35,24 +35,16 @@ namespace DAL.Services.Users
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<UserEntity> GetUserByIdAsync(int id)
+        public async Task<UserEntity?> GetUserByIdAsync(int id)
         {
             var user = await _context.Users.FindAsync(id);
-            if (user == null)
-            {
-                throw new KeyNotFoundException($"User with ID {id} not found.");
-            }
 
             return user;
         }
 
-        public async Task<UserEntity> GetUserByEmail(int id)
+        public async Task<UserEntity?> GetUserByEmail(string email)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == id.ToString());
-            if (user == null)
-            {
-                throw new KeyNotFoundException($"User with email {id} not found.");
-            }
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
 
             return user;
         }
