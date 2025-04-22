@@ -27,4 +27,8 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\images\defaultAvatar.jpg" />
+  </ItemGroup>
+
 </Project>

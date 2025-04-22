@@ -8,6 +8,29 @@
     <form asp-action="Create" method="post" enctype="multipart/form-data" class="p-4 shadow rounded bg-light" style="max-width: 600px; margin: auto;">
         <h4 class="mb-4">Реєстрація користувача</h4>
 
+        <div class="mb-3 text-center">
+            <label for="ImageFile" class="d-block">
+                <img id="defaultAvatar"
+                     src="/images/defaultAvatar.jpg"
+                     alt="Аватар"
+                     class="rounded-circle border"
+                     style="width: 150px; height: 150px; object-fit: cover; cursor: pointer;" />
+
+                <div id="croppedPreview"
+                     class="rounded-circle border d-none mx-auto"
+                     style="width: 150px; height: 150px; object-fit: cover; overflow: hidden; cursor: pointer"></div>
+            </label>
+
+            <input asp-for="ImageFile"
+                   type="file"
+                   accept="image/*"
+                   class="d-none"
+                   id="ImageFile" />
+            <input type="hidden" id="croppedImageData" name="CroppedImage" />
+        </div>
+
+        @await Html.PartialAsync("_UserImageCropper")   
+
         <div class="mb-3">
             <label asp-for="FirstName" class="form-label"></label>
             <input asp-for="FirstName" class="form-control" placeholder="Введіть ім’я" />
@@ -44,15 +67,21 @@
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
 
-        <div class="mb-3">
-            <label asp-for=ImageFile class="form-label"></label>
-            <input asp-for=ImageFile class="form-control" accept="image/*" placeholder="https://example.com/image.jpg">
-            <span asp-validation-for="ImageFile" class="text-danger"></span>
-        </div>
-
-        @await Html.PartialAsync("_UserImageCropper")
-
         <button type="submit" class="btn btn-primary">Зареєструватися</button>
         <a asp-action="Index" class="btn btn-info">Назад</a>
     </form>
 </div>
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/7.6.1/imask.min.js"></script>
+
+    <script>
+        IMask(
+            document.getElementById('Phone'),
+            {
+                mask: '+{38}(000)000-00-00'
+            }
+        )
+    </script>
+}

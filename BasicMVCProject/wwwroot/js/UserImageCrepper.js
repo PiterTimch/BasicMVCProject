@@ -1,11 +1,14 @@
-﻿let input, image, croppedDataInput, cropper, form, cropContainer;
+﻿let input, image, croppedDataInput, cropper, cropContainer;
+let defaultAvatar, croppedPreview;
 
 document.addEventListener("DOMContentLoaded", function () {
     input = document.getElementById("ImageFile");
     image = document.getElementById("croppingImage");
     croppedDataInput = document.getElementById("croppedImageData");
-    form = document.querySelector("form");
     cropContainer = document.getElementById("imageCropContainer");
+
+    defaultAvatar = document.getElementById("defaultAvatar");
+    croppedPreview = document.getElementById("croppedPreview");
 
     input.addEventListener("change", function () {
         const file = this.files[0];
@@ -15,24 +18,24 @@ document.addEventListener("DOMContentLoaded", function () {
             cropContainer.style.display = "block";
             image.style.display = "block";
 
+            defaultAvatar.classList.add("d-none");
+            croppedPreview.classList.remove("d-none");
+
             if (cropper) cropper.destroy();
 
             cropper = new Cropper(image, {
-                aspectRatio: 16 / 9,
+                aspectRatio: 1,
                 viewMode: 1,
                 autoCropArea: 1,
                 preview: "#croppedPreview",
                 cropend: function () {
                     const canvas = cropper.getCroppedCanvas();
                     croppedDataInput.value = canvas.toDataURL("image/webp");
-                    console.log(croppedDataInput.value);
 
-                    cropper.getCroppedCanvas().toBlob(function (blob) {
+                    canvas.toBlob(function (blob) {
                         const file = new File([blob], "cropped-image.webp", { type: "image/webp" });
-
                         const dataTransfer = new DataTransfer();
                         dataTransfer.items.add(file);
-
                         input.files = dataTransfer.files;
                     }, "image/webp");
                 }
