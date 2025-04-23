@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Views/Shared/_UserFormLayout.cshtml";
+}
+
+@model UserCreateViewModel
+
+<div class="container vh-100 d-flex align-items-center justify-content-center">
+    <form asp-action="Create" method="post" enctype="multipart/form-data" class="p-4 shadow rounded bg-light w-100" style="max-width: 600px; margin: auto;">
+        <h4 class="mb-4">Вхід</h4>
+        
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" class="form-control" placeholder="example@email.com" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label"></label>
+            <input asp-for="Password" class="form-control" placeholder="Введіть пароль" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Увійти</button>
+        <a asp-controller="Categories" asp-action="Index" class="btn btn-info">Назад</a>
+    </form>
+</div>
