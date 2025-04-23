@@ -2,13 +2,14 @@
 using BasicMVCProject.Interfaces;
 using BasicMVCProject.Models.User;
 using BasicMVCProject.Services;
+using BCrypt.Net;
 using DAL.Entities.User;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BasicMVCProject.Controllers
 {
-    public class UsersController(IMapper mapper, IUserService service, IImageService imageService) : Controller()
+    public class UsersController(IMapper mapper, IUserService service, IImageService imageService, IJWTService jWTService) : Controller()
     {
         public IActionResult Index()
         {
@@ -64,6 +65,30 @@ namespace BasicMVCProject.Controllers
             }
 
             await service.CreateUserAsync(entity);
+
+            return RedirectToAction("Index", "Categories");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(UserLoginViewModel model) 
+        {
+            var user = await service.GetUserByEmail(model.Email);
+
+            if (user == null)
+            {
+                ModelState.AddModelError(nameof(model.Email), "Неправильна пошта");
+                return View(model);
+            }
+
+            bool result = BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash);
+
+            if (!result)
+            {
+                ModelState.AddModelError(nameof(model.Password), "Неправильний пароль");
+                return View(model);
+            }
+
+            ViewBag.JWT = jWTService.GenerateToken(user);
 
             return RedirectToAction("Index", "Categories");
         }
