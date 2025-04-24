@@ -64,6 +64,8 @@ namespace BasicMVCProject.Controllers
                 entity.ImageName = imageName;
             }
 
+            entity.Role = "user";
+
             await service.CreateUserAsync(entity);
 
             return RedirectToAction("Index", "Categories");
@@ -88,7 +90,12 @@ namespace BasicMVCProject.Controllers
                 return View(model);
             }
 
-            ViewBag.JWT = jWTService.GenerateToken(user);
+            var token = jWTService.GenerateToken(user);
+
+            Response.Cookies.Append("jwt", token, new CookieOptions
+            {
+                HttpOnly = true
+            });
 
             return RedirectToAction("Index", "Categories");
         }

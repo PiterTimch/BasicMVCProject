@@ -40,7 +40,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Categories}/{action=Index}/{id?}")
+    pattern: "{controller=Users}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 var dir = builder.Configuration["ImageDir"];

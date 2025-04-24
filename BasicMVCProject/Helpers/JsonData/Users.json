@@ -1,0 +1,42 @@
+[
+  {
+    "FirstName": "Адмін",
+    "LastName": "Головний",
+    "Login": "admin",
+    "Email": "admin@example.com",
+    "Phone": "+380501234567",
+    "Password": "Admin123!"
+  },
+  {
+    "FirstName": "Оля",
+    "LastName": "Петренко",
+    "Login": "olya23",
+    "Email": "olya@example.com",
+    "Phone": "+380931234567",
+    "Password": "OlyaPass1"
+  },
+  {
+    "FirstName": "Іван",
+    "LastName": "Сидоренко",
+    "Login": "sydorik",
+    "Email": "ivan@example.com",
+    "Phone": "+380671234567",
+    "Password": "IvanPass2"
+  },
+  {
+    "FirstName": "Марія",
+    "LastName": "Коваленко",
+    "Login": "mari_k",
+    "Email": "maria@example.com",
+    "Phone": "+380991234567",
+    "Password": "Maria1234"
+  },
+  {
+    "FirstName": "Андрій",
+    "LastName": "Шевченко",
+    "Login": "sheva",
+    "Email": "andrii@example.com",
+    "Phone": "+380631234567",
+    "Password": "Andriy456"
+  }
+]

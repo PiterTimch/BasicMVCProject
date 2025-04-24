@@ -9,7 +9,6 @@ namespace BasicMVCProject.Mapper
         public UserMapper()
         {
             CreateMap<UserCreateViewModel, UserEntity>()
-                .ForMember(x => x.FirstName, y => y.Ignore())
                 .ForMember(x => x.PasswordHash, opt => opt.MapFrom(src => BCrypt.Net.BCrypt.HashPassword(src.Password)));
         }
     }

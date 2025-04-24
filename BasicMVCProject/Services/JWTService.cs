@@ -16,6 +16,7 @@ namespace BasicMVCProject.Services
                 {
                     new Claim("Email", user.Email),
                     new Claim("Login", user.Login),
+                    new Claim(ClaimTypes.Role, user.Role)
                 },
                 expires: DateTime.UtcNow.AddHours(1),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTSecurityKey"])), SecurityAlgorithms.HmacSha256)
