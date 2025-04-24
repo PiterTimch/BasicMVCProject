@@ -64,7 +64,7 @@ namespace BasicMVCProject.Controllers
                 entity.ImageName = imageName;
             }
 
-            entity.Role = "user";
+            entity.Role = "User";
 
             await service.CreateUserAsync(entity);
 

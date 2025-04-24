@@ -5,7 +5,8 @@
     "Login": "admin",
     "Email": "admin@example.com",
     "Phone": "+380501234567",
-    "Password": "Admin123!"
+    "Password": "Admin123!",
+    "Role": "Admin"
   },
   {
     "FirstName": "Оля",
@@ -13,7 +14,8 @@
     "Login": "olya23",
     "Email": "olya@example.com",
     "Phone": "+380931234567",
-    "Password": "OlyaPass1"
+    "Password": "OlyaPass1",
+    "Role": "User"
   },
   {
     "FirstName": "Іван",
@@ -21,7 +23,8 @@
     "Login": "sydorik",
     "Email": "ivan@example.com",
     "Phone": "+380671234567",
-    "Password": "IvanPass2"
+    "Password": "IvanPass2",
+    "Role": "User"
   },
   {
     "FirstName": "Марія",
@@ -29,7 +32,8 @@
     "Login": "mari_k",
     "Email": "maria@example.com",
     "Phone": "+380991234567",
-    "Password": "Maria1234"
+    "Password": "Maria1234",
+    "Role": "User"
   },
   {
     "FirstName": "Андрій",
@@ -37,6 +41,7 @@
     "Login": "sheva",
     "Email": "andrii@example.com",
     "Phone": "+380631234567",
-    "Password": "Andriy456"
+    "Password": "Andriy456",
+    "Role": "User"
   }
 ]
