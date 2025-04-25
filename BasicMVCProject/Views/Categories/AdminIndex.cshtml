@@ -1,0 +1,55 @@
+﻿@model List<BasicMVCProject.Models.Category.CategoryItemViewModel>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Категорії мультфільмів</h2>
+    <a href="@Url.Action("Create")" class="btn btn-success mb-3">Створити</a>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var item in Model)
+        {
+            var modalId = $"confirmDeleteModal_{item.Id}";
+            <div class="col">
+                <div class="card h-100 shadow-sm position-relative">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="text-decoration-none text-dark">
+                        <div class="position-relative" style="width: 100%; padding-top: 56.25%; overflow: hidden; background-color: #f0f0f0;">
+                            <img src="/images/400_@item.ImageUrl"
+                                 alt="@item.Name"
+                                 class="position-absolute top-0 start-0 w-100 h-100"
+                                 style="object-fit: contain;" />
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                            <p class="card-text">@item.Description</p>
+                        </div>
+                    </a>
+
+                    <div class="position-absolute top-0 end-0 p-3 delete-btn">
+                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#@modalId">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="@modalId" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="label_@item.Id">Підтвердження видалення</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Ви дійсно хочете видалити категорію <strong>@item.Name</strong>?
+                        </div>
+                        <div class="modal-footer">
+                            <form asp-action="Delete">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+                                <button type="submit" class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Видалити</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -4,6 +4,7 @@ using BasicMVCProject.Models.Category;
 using DAL.Context;
 using DAL.Entities.Category;
 using DAL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -13,10 +14,21 @@ using SixLabors.ImageSharp.Processing;
 
 namespace BasicMVCProject.Controllers
 {
+    [Authorize]
     public class CategoriesController(
         ICategoryService service, IMapper mapper, IConfiguration configuration, IImageService imageService
         ) : Controller
     {
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AdminIndex()
+        {
+            var categoiesEntity = await service.GetAllAsync();
+            var model = mapper.Map<List<CategoryItemViewModel>>(categoiesEntity);
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Index()
         {
             var categoiesEntity = await service.GetAllAsync();
@@ -55,7 +67,7 @@ namespace BasicMVCProject.Controllers
             entity.ImageUrl = imageName;
             await service.AddAsync(entity);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AdminIndex));
         }
 
         [HttpGet]
@@ -104,7 +116,7 @@ namespace BasicMVCProject.Controllers
             }
 
             await service.UpdateAsync(entity);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AdminIndex));
         }
 
         [HttpPost]
@@ -122,7 +134,7 @@ namespace BasicMVCProject.Controllers
             }
 
             await service.DeleteAsync(id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AdminIndex));
         }
     }
 }

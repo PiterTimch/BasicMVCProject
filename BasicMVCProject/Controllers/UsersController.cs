@@ -5,11 +5,13 @@ using BasicMVCProject.Services;
 using BCrypt.Net;
 using DAL.Entities.User;
 using DAL.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BasicMVCProject.Controllers
 {
-    public class UsersController(IMapper mapper, IUserService service, IImageService imageService, IJWTService jWTService) : Controller()
+    public class UsersController(IMapper mapper, IUserService service, IImageService imageService) : Controller()
     {
         public IActionResult Index()
         {
@@ -68,6 +70,8 @@ namespace BasicMVCProject.Controllers
 
             await service.CreateUserAsync(entity);
 
+            await SignInWithCookiesAsync(entity);
+
             return RedirectToAction("Index", "Categories");
         }
 
@@ -90,14 +94,30 @@ namespace BasicMVCProject.Controllers
                 return View(model);
             }
 
-            var token = jWTService.GenerateToken(user);
+            await SignInWithCookiesAsync(user);
 
-            Response.Cookies.Append("jwt", token, new CookieOptions
+            if (user.Role == "Admin")
             {
-                HttpOnly = true
-            });
+                return RedirectToAction("AdminIndex", "Categories");
+            }
 
             return RedirectToAction("Index", "Categories");
         }
+
+        private async Task SignInWithCookiesAsync(UserEntity user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.Login),
+                new Claim(ClaimTypes.Role, user.Role)
+            };
+
+            var identity = new ClaimsIdentity(claims, "Cookies");
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync("Cookies", principal);
+        }
+
     }
 }

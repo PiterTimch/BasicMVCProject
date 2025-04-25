@@ -20,7 +20,12 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Categories" asp-action="Index">Категорії</a>
+
+                        <a class="nav-link"
+                           asp-controller="Categories"
+                           asp-action="@(User.IsInRole("Admin") ? "AdminIndex" : "Index")">
+                            Категорії
+                        </a>
                     </li>
 
                     <li class="nav-item">

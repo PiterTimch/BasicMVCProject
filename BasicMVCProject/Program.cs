@@ -1,4 +1,3 @@
-using System;
 using BasicMVCProject.Helpers;
 using BasicMVCProject.Interfaces;
 using BasicMVCProject.Services;
@@ -11,7 +10,7 @@ using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Services
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -23,35 +22,44 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IImageService, ImageService>();
-builder.Services.AddScoped<IJWTService, JWTService>();
+
+// COOKIE-auth
+builder.Services.AddAuthentication("Cookies")
+    .AddCookie("Cookies", options =>
+    {
+        options.LoginPath = "/Users/Login";
+    });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Middleware
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
+app.UseStaticFiles();
+
+var dir = builder.Configuration["ImageDir"];
+string path = Path.Combine(Directory.GetCurrentDirectory(), dir);
+Directory.CreateDirectory(path);
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(path),
+    RequestPath = $"/{dir}"
+});
+
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
-app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Users}/{action=Index}/{id?}")
     .WithStaticAssets();
-
-var dir = builder.Configuration["ImageDir"];
-
-string path = Path.Combine(Directory.GetCurrentDirectory(), dir);
-Directory.CreateDirectory(path);
-
-app.UseStaticFiles(new StaticFileOptions {
-    FileProvider = new PhysicalFileProvider(path),
-    RequestPath = $"/{dir}",
-});
 
 await app.SeedData();
 
